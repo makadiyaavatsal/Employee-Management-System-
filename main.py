@@ -1,82 +1,76 @@
-class Employee:
-    def __init__(self, emp_id, name, department, salary):
-        self.emp_id = emp_id
-        self.name = name
-        self.department = department
-        self.salary = salary
-    def display(self):
-        # YOUR TURN: Finish this f-string using self.department and self.salary
-        print(f"ID: {self.emp_id}, Name: {self.name}, Department: {self.department}, Salary: {self.salary}")
-class EmployeeManager:
-    def __init__(self):
-        self.employees = {}
-    def add_employee(self):
-        emp_id = input("Enter Employee ID: ")
-        name = input("Enter Name: ")
-        department = input("Enter Department: ")
-        salary = input("Enter Salary: ")
-        new_employee = Employee(emp_id, name, department, salary)
-        self.employees[emp_id] = new_employee
-        print("Employee added successfully!")
+employees = {}
 
-    def view_employees(self):
-        if len(self.employees) == 0:
-            print("No employees found!")
-        else:
-            print("\n--- Employee List ---")
-            for emp_id, employee in self.employees.items():
-                employee.display()
-    def search_employee(self):
-        emp_id = input("Enter Employee ID to search: ")
-        if emp_id in self.employees:
-            employee = self.employees[emp_id]
-            employee.display()
-        else:
-            print("Employee not found!")
-    def update_employee(self):
-        emp_id = input("Enter Employee ID to update: ")
+def add_employee():
+    emp_id = input("Enter Employee ID: ")
+    name = input("Enter Name: ")
+    department = input("Enter Department: ")
+    salary = input("Enter Salary: ")
+    employees[emp_id] = {
+        'name': name,
+        'department': department,
+        'salary': salary
+    }
+    print("Employee added successfully!")
+
+def view_employees():
+    if len(employees) == 0:
+        print("No employees found!")
+    else:
+        print("\n--- Employee List ---")
+        for emp_id, details in employees.items():
+            print(f"ID: {emp_id}, Name: {details['name']}, Department: {details['department']}, Salary: {details['salary']}")
+
+def search_employee():
+    emp_id = input("Enter Employee ID to search: ")
+    if emp_id in employees:
+        details = employees[emp_id]
+        print(f"ID: {emp_id}, Name: {details['name']}, Department: {details['department']}, Salary: {details['salary']}")
+    else:
+        print("Employee not found!")
+
+def update_employee():
+    emp_id = input("Enter Employee ID to update: ")
+    if emp_id in employees:
+        print("Current details:")
+        print(f"ID: {emp_id}, Name: {employees[emp_id]['name']}, Department: {employees[emp_id]['department']}, Salary: {employees[emp_id]['salary']}")
+        print("\nEnter new details (press Enter to keep current value):")
+        name = input(f"Name ({employees[emp_id]['name']}): ") or employees[emp_id]['name']
+        department = input(f"Department ({employees[emp_id]['department']}): ") or employees[emp_id]['department']
+        salary = input(f"Salary ({employees[emp_id]['salary']}): ") or employees[emp_id]['salary']
         
-        if emp_id in self.employees:
-            employee = self.employees[emp_id]
-            print("Current details:")
-            # We can use our handy display method!
-            employee.display() 
-            
-            print("\nEnter new details (press Enter to keep current value):")
-            # 2. Use the object's attributes (employee.name) in the f-string
-            name = input(f"Name ({employee.name}): ") or employee.name
-            department = input(f"Department ({employee.department}): ") or employee.department
-            salary = input(f"Salary ({employee.salary}):") or employee.salary    
-            employee.name = name
-            employee.department = department
-            employee.salary = salary
-            print("Employee updated successfully!")
-        else:
-            print("Employee not found!")
-    def delete_employee(self):
-        emp_id = input("Enter Employee ID to delete: ")
-        if emp_id in self.employees:
-            del self.employees[emp_id]
-            print("Employee deleted successfully!")
-        else:
-            print("Employee not found!")
-def main():
-    # 1. Hire the manager! This creates the actual object.
-    manager = EmployeeManager()
+        employees[emp_id] = {
+            'name': name,
+            'department': department,
+            'salary': salary
+        }
+        print("Employee updated successfully!")
+    else:
+        print("Employee not found!")
+
+def delete_employee():
+    emp_id = input("Enter Employee ID to delete: ")
+    if emp_id in employees:
+        del employees[emp_id]
+        print("Employee deleted successfully!")
+    else:
+        print("Employee not found!")
+
+def main():  
     while True:
         print("\nSelect Appropriate option:")
         print("1. Add \n2. View \n3. Search \n4. Update \n5. Delete \n6. Exit")
         choice = input("Enter your choice: ")
+        
         if choice == '1':
-            manager.add_employee()
+            add_employee()
         elif choice == '2':
-            manager.view_employees()
+            view_employees()
         elif choice == '3':
-            manager.search_employee()
+            search_employee()
         elif choice == '4':
-            manager.update_employee()
+            update_employee()
         elif choice == '5':
-            manager.delete_employee()
+            delete_employee()
         elif choice == '6':
             print("Goodbye!")
             break
